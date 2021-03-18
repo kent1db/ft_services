@@ -1,0 +1,62 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ftps
+  annotations:
+    metallb.universe.tf/allow-shared-ip: shared
+spec:
+  ports:
+    - name: ftps
+      port: 21
+      targetPort: 21
+      protocol: TCP
+    - name: p30
+      port: 30000
+      targetPort: 30000
+      protocol: TCP
+    - name: p31
+      port: 30001
+      targetPort: 30001
+      protocol: TCP
+    - name: p32
+      port: 30002
+      targetPort: 30002
+      protocol: TCP
+    - name: p33
+      port: 30003
+      targetPort: 30003
+      protocol: TCP
+    - name: p34
+      port: 30004
+      targetPort: 30004
+      protocol: TCP
+  selector:
+    run: ftps
+  type: LoadBalancer
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ftps
+  annotations:
+    metallb.universe.tf/allow-shared-ip: shared
+spec:
+  selector:
+    matchLabels:
+      run: ftps
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: ftps
+    spec:
+      restartPolicy: Always
+      containers:
+      - name: ftps
+        imagePullPolicy: Never
+        image: ftps-image
+        ports:
+        - name: ftps
+          containerPort: 21
