@@ -12,4 +12,4 @@ chmod 600 /etc/ssl/private/pure-ftpd.pem
 
 # Starting
 telegraf conf &
-/usr/sbin/pure-ftpd -Y 2 -p 30000:30004 -P 192.168.99.201
+/usr/sbin/pure-ftpd -Y 2 -p 30000:30004 -P 192.168.99.204

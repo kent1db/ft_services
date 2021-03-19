@@ -6,7 +6,7 @@
 #    By: qurobert <qurobert@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/03/04 13:10:14 by qurobert          #+#    #+#              #
-#    Updated: 2021/03/18 15:47:48 by qurobert         ###   ########lyon.fr    #
+#    Updated: 2021/03/19 11:31:39 by qurobert         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,10 @@ kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.5/manife
 kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
 kubectl apply -f ./srcs/metallb/.
 
+# Setup InfluxDB
+docker build -t influxdb-image ./srcs/influxdb/
+kubectl apply -f ./srcs/influxdb/yaml
+
 # Setup Nginx
 docker build -t nginx-image ./srcs/nginx/
 kubectl apply -f ./srcs/nginx/nginx.yaml
@@ -34,10 +38,6 @@ kubectl apply -f ./srcs/nginx/nginx.yaml
 eval $(minikube docker-env)
 docker build -t ftps-image ./srcs/ftps/
 kubectl apply -f ./srcs/ftps/ftps.yaml
-
-# Setup InfluxDB
-docker build -t influxdb-image ./srcs/influxdb/
-kubectl apply -f ./srcs/influxdb/yaml
 
 # Setup Grafana
 docker build -t grafana-image ./srcs/grafana/
